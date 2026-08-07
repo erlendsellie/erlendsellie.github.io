@@ -9,7 +9,11 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 .wrap{max-width:1120px;margin:auto;padding:28px 18px 70px}
-header{margin-bottom:18px}
+header{margin-bottom:18px;display:flex;gap:18px;align-items:flex-end;justify-content:space-between}
+.header-copy{min-width:0}
+.header-actions{display:flex;align-items:center;flex:0 0 auto}
+.share{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:10px 16px;border-radius:11px;cursor:pointer;font:inherit;font-weight:800;box-shadow:0 2px 8px rgba(40,32,20,.04);min-width:58px}
+.share:hover{background:var(--soft)}
 h1{margin:0;font-size:clamp(30px,5vw,50px);letter-spacing:-.04em;line-height:1.02}
 .lead{max-width:830px;color:var(--muted);font-size:16px;margin:10px 0 0}
 .offer{margin:18px 0 20px;background:#282620;color:#eee8de;border-radius:15px;padding:13px 16px;font-size:14px}
@@ -32,19 +36,21 @@ h1{margin:0;font-size:clamp(30px,5vw,50px);letter-spacing:-.04em;line-height:1.0
 .source{color:inherit;text-decoration:none}.source:hover{text-decoration:underline}
 .tie-note{font-weight:750;color:#675d50;visibility:hidden}.card.tied .tie-note{visibility:visible}
 .help{margin:14px 2px 0;color:var(--muted);font-size:12px}
-@media(max-width:760px){.wrap{padding:18px 11px 45px}.card{grid-template-columns:1fr}.photo{height:220px;min-height:0}.content{padding:15px}.top{gap:10px}.rank{min-width:42px;height:42px;font-size:18px}.title h2{font-size:20px}.price{font-size:16px}.foot{align-items:flex-start;flex-direction:column;gap:4px}}
-@media print{body{background:white}.wrap{max-width:none;padding:0}.card{break-inside:avoid;box-shadow:none}.help{display:none}}
+.reset{display:inline-block;margin-top:12px;border:0;background:none;color:var(--muted);padding:0;text-decoration:underline;cursor:pointer;font:inherit;font-size:12px}
+@media(max-width:760px){.wrap{padding:18px 11px 45px}header{align-items:flex-start}.header-actions{padding-top:2px}.card{grid-template-columns:1fr}.photo{height:220px;min-height:0}.content{padding:15px}.top{gap:10px}.rank{min-width:42px;height:42px;font-size:18px}.title h2{font-size:20px}.price{font-size:16px}.foot{align-items:flex-start;flex-direction:column;gap:4px}}
+@media print{body{background:white}.header-actions{display:none}.wrap{max-width:none;padding:0}.card{break-inside:avoid;box-shadow:none}.help{display:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-<h1>Benkeplate-rangering</h1>
-<p class="lead">Dra kortan opp og ned. Øverst vinner. Vil du ha delt plass, slipp kortet midt oppå et anna kort. Slipp øverst eller nederst på kortet for å plassere det før eller etter.</p>
+<div class="header-copy"><h1>Benkeplate-rangering</h1>
+<p class="lead">Dra kortan opp og ned. Øverst vinner. Vil du ha delt plass, slipp kortet midt oppå et anna kort. Slipp øverst eller nederst på kortet for å plassere det før eller etter.</p></div>
+<div class="header-actions"><button id="share" class="share" type="button">Del</button></div>
 </header>
 <div class="offer"><b>Pris inkl. mva:</b> Marazzi Limestone Sand ca. 95 000 · Liquid Shell 97 308 · Nebbia 111 045 · Avorio / Ava / Sabbia 123 762 kr.</div>
 <main id="list" class="list"></main>
-<p class="help">Rekkefølga lagres automatisk i nettleseren. Delt plass bruker samme plassnummer, og neste plass hopper tilsvarende, f.eks. 1, 2, 2, 4.</p>
+<p class="help">Rekkefølga lagres automatisk i nettleseren og i URL-en. Delt plass bruker samme plassnummer, og neste plass hopper tilsvarende, f.eks. 1, 2, 2, 4.</p>
 </div>
 <script>
 const items=[
@@ -56,12 +62,26 @@ const items=[
  {id:'sabbia',name:'Dekton Sabbia',short:'Sabbia',price:123761.77,img:'https://imgix.cosentino.com/wp-content/uploads/2023/01/Sabia.jpg?auto=format%2Ccompress&ixlib=php-3.3.0',tags:['Dekton','Travertin-look','Varm','Mer bevegelse'],desc:'Travertin-inspirert med tydeligere linjer og bevegelse. Mest markant natursteinpreg av disse alternativene.',source:'https://www.cosentino.com/colors/dekton/sabbia/'}
 ];
 const KEY='benkeplate-ranking-simple-v1';
+const PARAM='r';
 const byId=Object.fromEntries(items.map(x=>[x.id,x]));
-let groups=load();
+function validGroups(g){
+  return Array.isArray(g)&&g.length>0&&g.every(x=>Array.isArray(x)&&x.length>0)&&g.flat().every(id=>byId[id])&&new Set(g.flat()).size===items.length;
+}
+function encodeGroups(g){return g.map(group=>group.join(',')).join('~')}
+function decodeGroups(value){
+  if(!value)return null;
+  const g=value.split('~').map(part=>part.split(',').filter(Boolean));
+  return validGroups(g)?g:null;
+}
 function load(){
+  const params=new URLSearchParams(location.search);
+  if(params.has(PARAM)){
+    const fromUrl=decodeGroups(params.get(PARAM));
+    if(fromUrl){localStorage.setItem(KEY,JSON.stringify(fromUrl));return fromUrl}
+  }
   try{
     const s=JSON.parse(localStorage.getItem(KEY));
-    if(Array.isArray(s)&&s.flat().every(id=>byId[id])&&new Set(s.flat()).size===items.length)return s;
+    if(validGroups(s))return s;
   }catch(e){}
   try{
     const old=JSON.parse(localStorage.getItem('benkeplate-rangering-v3')||'{}');
@@ -69,13 +89,41 @@ function load(){
     if(ranked.length){
       const g=[]; const used=new Set();
       for(const x of ranked){const r=String(old[x.id].rank);let target=g.find(z=>z.rank===r);if(!target){target={rank:r,ids:[]};g.push(target)}target.ids.push(x.id);used.add(x.id)}
-      return [...g.map(z=>z.ids),items.filter(x=>!used.has(x.id)).map(x=>[x.id])];
+      const migrated=[...g.map(z=>z.ids),items.filter(x=>!used.has(x.id)).map(x=>[x.id])];
+      if(validGroups(migrated))return migrated;
     }
   }catch(e){}
   return items.map(x=>[x.id]);
 }
-function save(){localStorage.setItem(KEY,JSON.stringify(groups))}
+let groups=load();
+function syncUrl(){
+  const url=new URL(location.origin+location.pathname);
+  url.searchParams.set(PARAM,encodeGroups(groups));
+  history.replaceState(null,'',url);
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(groups));syncUrl()}
+function shareUrl(){
+  const url=new URL(location.origin+location.pathname);
+  url.searchParams.set(PARAM,encodeGroups(groups));
+  return url.toString();
+}
 function fmt(n){return new Intl.NumberFormat('nb-NO',{maximumFractionDigits:0}).format(n)+' kr'}
+async function share(){
+ const url=shareUrl();
+ const button=document.getElementById('share');
+ try{
+   if(navigator.share){
+     await navigator.share({title:'Benkeplate-rangering',text:'Her er benkeplate-rangeringa mi:',url});
+     return;
+   }
+   await navigator.clipboard.writeText(url);
+   button.textContent='Kopiert!';
+ }catch(e){
+   if(e?.name==='AbortError')return;
+   try{await navigator.clipboard.writeText(url);button.textContent='Kopiert!'}catch(_){button.textContent='Kopier URL'}
+ }
+ clearTimeout(share._t);share._t=setTimeout(()=>button.textContent='Del',1800);
+}
 function rankMap(){let rank=1;const m={};for(const g of groups){for(const id of g)m[id]=rank;rank+=g.length}return m}
 function render(){
  const ranks=rankMap(); const list=document.getElementById('list');
@@ -112,6 +160,8 @@ function bindDnD(){
   card.addEventListener('drop',e=>{e.preventDefault();const id=e.dataTransfer.getData('text/plain');const r=card.getBoundingClientRect(),p=(e.clientY-r.top)/r.height;const mode=p<.27?'before':p>.73?'after':'tie';clearMarks();place(id,card.dataset.id,mode)});
  });
 }
+document.getElementById('share').addEventListener('click',share);
+syncUrl();
 render();
 </script>
 </body>
