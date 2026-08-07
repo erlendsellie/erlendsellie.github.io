@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Benkeplate-rangering</title>
+<style>
+:root{--bg:#f3f0ea;--panel:#fffdf9;--ink:#211f1b;--muted:#6d6961;--line:#ded8ce;--accent:#564c3e;--soft:#ece6dc;--good:#ebf1e8;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1440px;margin:auto;padding:28px 22px 70px}
+header{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;margin-bottom:22px}
+h1{margin:0;font-size:clamp(29px,4vw,48px);letter-spacing:-.035em;line-height:1.03}
+.lead{max-width:850px;color:var(--muted);font-size:16px;margin:10px 0 0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+button{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:10px 13px;border-radius:10px;cursor:pointer;font-weight:650}
+button:hover{background:var(--soft)}
+.offer{background:#282620;color:#fff;border-radius:16px;padding:16px 18px;margin:18px 0 24px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.offer strong{font-size:16px} .offer span{color:#ddd7cc} .offer b{color:#fff}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 3px 14px rgba(40,32,20,.035)}
+.photo{aspect-ratio:4/3;width:100%;object-fit:cover;background:#ddd}
+.content{padding:17px;display:flex;flex-direction:column;gap:12px;flex:1}
+.topline{display:flex;justify-content:space-between;gap:12px;align-items:start}
+h2{font-size:21px;margin:0;line-height:1.15;letter-spacing:-.02em}
+.price{font-weight:800;white-space:nowrap;font-size:16px}
+.price.unknown{font-size:13px;color:var(--muted);white-space:normal;text-align:right;max-width:130px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;background:var(--soft);border-radius:999px;padding:4px 8px;color:#554f47}
+p{margin:0} .desc{color:#45413b} .note{font-size:13px;color:var(--muted);border-left:3px solid var(--line);padding-left:10px}
+.controls{margin-top:auto;border-top:1px solid var(--line);padding-top:13px;display:grid;grid-template-columns:110px 1fr;gap:10px 12px;align-items:center}
+label{font-size:13px;color:var(--muted);font-weight:650}
+select,input[type=number],textarea{width:100%;border:1px solid #cbc3b7;background:white;border-radius:9px;padding:9px;color:var(--ink);font:inherit}
+.scorewrap{display:flex;align-items:center;gap:9px} input[type=range]{width:100%} .scoreval{font-variant-numeric:tabular-nums;font-weight:800;min-width:38px;text-align:right}
+textarea{resize:vertical;min-height:58px;grid-column:1/-1}
+.source{font-size:12px;color:var(--muted)} .source a{color:inherit}
+.dragboard{margin:0 0 24px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px}
+.dragboard h2{font-size:25px;margin:0 0 6px}.draghelp{color:var(--muted);margin-bottom:14px}
+.rankzones{display:grid;grid-template-columns:1fr;gap:9px}.dropzone{min-height:82px;border:2px dashed #cfc6b8;border-radius:14px;padding:10px;display:grid;grid-template-columns:78px 1fr;gap:10px;align-items:start;background:#faf8f4;transition:.15s}
+.dropzone.dragover{border-color:#726656;background:#f0ebe2;transform:scale(1.003)}.zonehead{font-weight:850;font-size:18px;padding:10px 4px}.zonehead small{display:block;font-size:11px;color:var(--muted);font-weight:600}
+.zoneitems{display:flex;gap:9px;flex-wrap:wrap;min-height:58px}.dragitem{display:grid;grid-template-columns:50px 1fr auto;gap:9px;align-items:center;background:white;border:1px solid var(--line);border-radius:12px;padding:6px 8px 6px 6px;min-width:250px;max-width:360px;box-shadow:0 2px 8px rgba(40,32,20,.04);cursor:grab;user-select:none}.dragitem:active{cursor:grabbing}.dragitem.dragging{opacity:.4}
+.dragthumb{width:50px;height:50px;border-radius:9px;object-fit:cover}.dragname{font-weight:800;line-height:1.15}.dragprice{font-size:12px;color:var(--muted);margin-top:3px}.grip{font-size:21px;color:#9b9285;padding:4px}.unranked{margin-top:12px}.unranked .dropzone{background:#f1eee8}
+@media(max-width:680px){.dropzone{grid-template-columns:1fr}.zonehead{padding:2px}.dragitem{min-width:100%;max-width:none}}
+.results{margin-top:25px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px}
+.results h2{font-size:24px;margin-bottom:12px}
+.resultgrid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px}
+.ranklist{display:flex;flex-direction:column;gap:7px}
+.rankrow{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;padding:9px 10px;background:#f7f4ef;border-radius:10px}
+.ranknum{font-size:20px;font-weight:850} .rankname{font-weight:700} .rankmeta{font-size:13px;color:var(--muted);text-align:right}
+.pricebar{display:grid;grid-template-columns:160px 1fr 90px;gap:10px;align-items:center;margin:9px 0}
+.bar{height:9px;background:#eee8de;border-radius:10px;overflow:hidden} .bar>i{display:block;height:100%;background:#6d665d;border-radius:10px}
+.small{font-size:12px;color:var(--muted)}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:12px}
+.badge{background:var(--good);padding:4px 7px;border-radius:8px;color:#435440}
+footer{margin-top:18px;color:var(--muted);font-size:12px}
+@media(max-width:1050px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))} .resultgrid{grid-template-columns:1fr}}
+@media(max-width:680px){.wrap{padding:18px 12px 45px} header{grid-template-columns:1fr} .actions{justify-content:flex-start} .grid{grid-template-columns:1fr} .topline{display:block} .price,.price.unknown{margin-top:6px;text-align:left;max-width:none} .pricebar{grid-template-columns:125px 1fr 75px}}
+@media print{.actions,.controls,textarea{display:none!important} body{background:white} .wrap{max-width:none;padding:0} .grid{grid-template-columns:repeat(2,1fr)} .card,.results{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>Den store benkeplate-domstolen</h1>
+    <p class="lead">Sett <b>plass 1–6</b> på hver plate. Samme plass kan brukes flere ganger, så delt 1., delt 2. osv. er helt lov. Gi gjerne også 1–10 i magefølelse. Alt lagres bare lokalt i nettleseren din.</p>
+  </div>
+  <div class="actions"><button id="copy">Kopier resultat</button><button onclick="window.print()">Skriv ut / PDF</button><button id="reset">Nullstill</button></div>
+</header>
+<div class="offer"><strong>Prisgrunnlag</strong><span>Siste Gmail-tilbud er <b>20 mm Dekton</b>. Nebbia <b>111 045 kr</b> · Liquid Shell <b>97 308 kr</b> · Ava/Sabbia <b>123 762 kr</b>. Marazzi er satt til <b>ca. 95 000 kr</b> etter deres eget anslag. Avorio er satt til <b>123 762 kr</b>, samme prosjektpris som Ava, etter ønsket deres.</span></div>
+<section class="dragboard">
+  <h2>Drag & drop-rangering</h2>
+  <p class="draghelp">Dra platene rett på ønsket plass. Flere kort i samme rad = delt plass. Dra tilbake til «Ikke rangert» for å fjerne plassering.</p>
+  <div id="rankzones" class="rankzones"></div>
+  <div id="unranked" class="unranked"></div>
+</section>
+<div id="cards" class="grid"></div>
+<section class="results">
+ <h2>Rangering</h2>
+ <div class="resultgrid">
+   <div><div id="ranklist" class="ranklist"></div><div class="legend"><span class="badge">Delt plass støttes</span><span>Uten plassering havner nederst.</span></div></div>
+   <div><strong>Pris mot billigste tilbud</strong><div id="prices"></div><p class="small">Avorio er satt lik Ava i pris: 123 761,77 kr.</p></div>
+ </div>
+</section>
+<footer>Bildene er representative nettbilder og kan se annerledes ut enn fysiske prøver i deres lys. Det er prøvene hjemme som vinner over skjermen, dessverre for internettets stolthet.</footer>
+</div>
+<script>
+const items=[{"id":"avorio","name":"Dekton VK02 Avorio","short":"Avorio","price":123761.77,"priceLabel":"123 762 kr","desc":"Den mørkeste av prøvene dere har hjemme. Varm lys-beige/krem med små fossile og mineralske detaljer. Rolig, natursteinaktig og mindre ‘hvit kjøkkenbenk’ enn Nebbia.","tags":["Dekton","Pietra Kode","Matt","Varm beige"],"note":"Bra når du vil ha tydelig varme mot mørke fronter uten at platen roper etter oppmerksomhet.","source":"https://benkeplater-trondelag.no/produkter/vk02-avorio/","imgData":"https://benkeplater-trondelag.no/wp-content/uploads/2024/12/Dekton-Avorio.jpg"},{"id":"ava","name":"Dekton Ava","short":"Ava","price":123761.77,"priceLabel":"123 762 kr","desc":"Kremfarget Ceppo di Gré-look med mer synlig struktur og variasjon enn de roligste alternativene.","tags":["Dekton","Matt","Krem","Mer liv"],"note":"Mer karakter enn Nebbia og Liquid Shell. Kan bli dritlekker mot mørke fronter, men den vil synes mer.","source":"https://www.cosentino.com/colors/dekton/ava/","imgData":"https://assetstools.cosentino.com/api/v1/bynder/color/DEKTON/AVA"},{"id":"liquid-shell","name":"Dekton Liquid Shell","short":"Liquid Shell","price":97307.77,"priceLabel":"97 308 kr","desc":"Lys sand/greige med subtil, nesten kalk- og keramikkaktig overflate. Moderne uten å bli klinisk hvit.","tags":["Dekton","Matt","Sand","Rolig"],"note":"Et ganske trygt sweet spot mellom pris, varme og et kjøkken som ikke ser ut som et laboratorium.","source":"https://www.cosentino.com/colors/dekton/liquid-shell/","imgData":"https://assetstools.cosentino.com/api/v1/bynder/color/DEKTON/LIQUID_SHELL"},{"id":"marazzi","name":"Marazzi Limestone Sand","short":"Limestone Sand","price":95000,"priceLabel":"ca. 95 000 kr","desc":"Varm limestone-look i porselen/keramikk. Myk sandfarge og klassisk natursteinspreg.","tags":["Marazzi","Porselen","Limestone","Varm sand"],"note":"Veldig naturlig sammen med tre og Sinarp. Ikke Dekton, så sammenlign garanti, bearbeiding og kantdetaljer separat.","source":"https://www.marazzi.it/en/collections/limestone/","imgData":"https://nerostein.no/wp-content/uploads/2024/07/Marazzi_limestone-.jpg"},{"id":"nebbia","name":"Dekton Nebbia","short":"Nebbia","price":111045.29,"priceLabel":"111 045 kr","desc":"Lysest av prøvene dere har hjemme. Kremhvit base med varme taupe- og steindetaljer. Rolig og lett.","tags":["Dekton","Matt","Lys krem","Rolig"],"note":"Gir mest lys og minst visuell tyngde. Risikoen er at den blir litt for forsiktig om dere vil ha mer steinfølelse.","source":"https://www.cosentino.com/colors/dekton/nebbia/","imgData":"https://assetstools.cosentino.com/api/v1/bynder/color/DEKTON/NEBBIA"},{"id":"sabbia","name":"Dekton Sabbia","short":"Sabbia","price":123761.77,"priceLabel":"123 762 kr","desc":"Travertin-inspirert beige med tydeligere lineær struktur og naturlig bevegelse.","tags":["Dekton","Travertin-look","Beige","Mest struktur"],"note":"Mest statement av gjengen. Enten blir det ‘holy shit, den var fin’, eller så blir dere lei av mønsteret om fem år. Sånn e livet.","source":"https://www.cosentino.com/colors/dekton/sabbia/","imgData":"https://assetstools.cosentino.com/api/v1/bynder/color/DEKTON/SABBIA"}];
+const KEY='benkeplate-rangering-v3';
+let state={};
+try{state=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){state={}}
+for(const x of items){state[x.id]??={rank:'',score:0,note:'',price:x.price}; if(state[x.id].price===undefined || (x.id==='avorio' && state[x.id].price==null)) state[x.id].price=x.price;}
+const fmt=n=>n==null?'—':new Intl.NumberFormat('nb-NO',{maximumFractionDigits:0}).format(n)+' kr';
+function save(){localStorage.setItem(KEY,JSON.stringify(state)); renderResults(); if(document.getElementById('rankzones')) renderDragBoard();}
+function card(x){
+ const s=state[x.id];
+ const rankOptions=['','1','2','3','4','5','6'].map(v=>`<option value="${v}" ${String(s.rank)===v?'selected':''}>${v||'Ikke satt'}</option>`).join('');
+ return `<article class="card"><img class="photo" src="${x.imgData}" alt="${x.name}" onerror="this.style.display='none'"><div class="content"><div class="topline"><h2>${x.name}</h2><div class="price">${x.priceLabel}</div></div><div class="tags">${x.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div><p class="desc">${x.desc}</p><p class="note">${x.note}</p><div class="controls"><label for="rank-${x.id}">Plass</label><select id="rank-${x.id}" data-id="${x.id}" data-field="rank">${rankOptions}</select><label for="score-${x.id}">Magefølelse</label><div class="scorewrap"><input id="score-${x.id}" type="range" min="0" max="10" step="1" value="${s.score||0}" data-id="${x.id}" data-field="score"><span class="scoreval" id="sv-${x.id}">${s.score?s.score+'/10':'—'}</span></div><label for="price-${x.id}">Prosjektpris</label><input id="price-${x.id}" type="number" min="0" step="100" value="${s.price??''}" data-id="${x.id}" data-field="price"><textarea aria-label="Notat om ${x.name}" placeholder="Notat: hva liker / liker du ikke?" data-id="${x.id}" data-field="note">${s.note||''}</textarea></div><div class="source"><a href="${x.source}" target="_blank" rel="noopener">Produktinfo / kilde ↗</a></div></div></article>`
+}
+function dragItem(x){const s=state[x.id];return `<div class="dragitem" draggable="true" data-drag-id="${x.id}"><img class="dragthumb" src="${x.imgData}" alt="" onerror="this.style.display='none'"><div><div class="dragname">${x.short}</div><div class="dragprice">${s.price!=null?fmt(s.price):'pris ?'}${s.score?' · '+s.score+'/10':''}</div></div><div class="grip" title="Dra">⋮⋮</div></div>`;}
+function renderDragBoard(){const zones=document.getElementById('rankzones');zones.innerHTML=[1,2,3,4,5,6].map(rank=>{const inRank=items.filter(x=>String(state[x.id].rank)===String(rank));return `<div class="dropzone" data-rank="${rank}"><div class="zonehead">${rank}. plass<small>${inRank.length>1?'DELT PLASS':''}</small></div><div class="zoneitems">${inRank.map(dragItem).join('')}</div></div>`}).join('');const un=items.filter(x=>state[x.id].rank==='');document.getElementById('unranked').innerHTML=`<div class="dropzone" data-rank=""><div class="zonehead">Ikke rangert<small>DRA HIT FOR Å FJERNE</small></div><div class="zoneitems">${un.map(dragItem).join('')}</div></div>`;bindDnD();}
+function bindDnD(){document.querySelectorAll('.dragitem').forEach(el=>{el.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',el.dataset.dragId);e.dataTransfer.effectAllowed='move';requestAnimationFrame(()=>el.classList.add('dragging'));});el.addEventListener('dragend',()=>el.classList.remove('dragging'));});document.querySelectorAll('.dropzone').forEach(z=>{z.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move';z.classList.add('dragover');});z.addEventListener('dragleave',e=>{if(!z.contains(e.relatedTarget))z.classList.remove('dragover');});z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('dragover');const id=e.dataTransfer.getData('text/plain');if(!id||!state[id])return;state[id].rank=z.dataset.rank;save();renderCards();});});}
+function renderCards(){document.getElementById('cards').innerHTML=items.map(card).join('');document.querySelectorAll('[data-field]').forEach(el=>el.addEventListener('input',e=>{const id=e.target.dataset.id,f=e.target.dataset.field;let v=e.target.value;if(f==='score'){v=Number(v);document.getElementById('sv-'+id).textContent=v?v+'/10':'—';}if(f==='price')v=v===''?null:Number(v);state[id][f]=v;save();}));}
+function renderResults(){const sorted=[...items].sort((a,b)=>{const ra=state[a.id].rank===''?99:Number(state[a.id].rank),rb=state[b.id].rank===''?99:Number(state[b.id].rank);if(ra!==rb)return ra-rb;return(state[b.id].score||0)-(state[a.id].score||0);});document.getElementById('ranklist').innerHTML=sorted.map(x=>{const s=state[x.id];const r=s.rank===''?'–':s.rank+'.';const meta=[s.score?`${s.score}/10`:null,s.price!=null?fmt(s.price):'pris ?'].filter(Boolean).join(' · ');return `<div class="rankrow"><div class="ranknum">${r}</div><div><div class="rankname">${x.short}</div>${s.note?`<div class="small">${escapeHtml(s.note)}</div>`:''}</div><div class="rankmeta">${meta}</div></div>`}).join('');const priced=items.filter(x=>state[x.id].price!=null).sort((a,b)=>state[a.id].price-state[b.id].price);const min=Math.min(...priced.map(x=>state[x.id].price)),max=Math.max(...priced.map(x=>state[x.id].price));document.getElementById('prices').innerHTML=priced.map(x=>{const p=state[x.id].price;const pct=max===min?100:28+72*(p-min)/(max-min);const delta=p-min;return `<div class="pricebar"><span>${x.short}</span><div class="bar"><i style="width:${pct}%"></i></div><span class="small" style="text-align:right">${delta<1?fmt(p):'+'+fmt(delta)}</span></div>`}).join('');}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+document.getElementById('reset').addEventListener('click',()=>{if(confirm('Nullstille rangering, score, notater og eventuelle endrede priser?')){localStorage.removeItem(KEY);location.reload();}});
+document.getElementById('copy').addEventListener('click',async()=>{const sorted=[...items].sort((a,b)=>(state[a.id].rank===''?99:+state[a.id].rank)-(state[b.id].rank===''?99:+state[b.id].rank));const lines=['Benkeplate-rangering',''].concat(sorted.map(x=>{const s=state[x.id];return `${s.rank||'-'}. ${x.short}${s.score?' · '+s.score+'/10':''}${s.price!=null?' · '+fmt(s.price):''}${s.note?' · '+s.note:''}`;}));const text=lines.join('\n');try{await navigator.clipboard.writeText(text);alert('Resultatet er kopiert.')}catch(e){prompt('Kopier resultatet:',text)}});
+renderDragBoard();renderCards();renderResults();
+</script>
+</body>
+</html>
