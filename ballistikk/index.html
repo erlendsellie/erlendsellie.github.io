@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Interaktiv ballistikk-kalkulator for 6,5x55, .308 Winchester og .22 LR.">
 <title>Ballistikk-kalkulator</title>
-<link rel="stylesheet" href="./style.css">
-<script defer src="./app.js"></script>
+<link rel="stylesheet" href="./style.css?v=20261107-2">
+<script defer src="./app.js?v=20261107-2"></script>
 </head>
 <body>
 <main>
@@ -22,7 +22,7 @@
 <label>Kategori<select id="typeFilter"><option value="all">Alle</option><option value="hunting">Jakt</option><option value="training">Trening / match</option></select></label>
 </div>
 <div id="loadList" class="ammo-groups"></div>
-<div class="actions"><button id="clearBtn">Fjern alle</button><button id="sixBtn">Standard 6,5×55</button></div>
+<div class="actions"><button id="clearBtn" type="button">Fjern alle</button><button id="sixBtn" type="button">Standard 6,5×55</button></div>
 <h2 class="space">Forhold</h2>
 <div class="controls">
 <label>Vind m/s (+ fra venstre)<input id="wind" type="number" step=".5" value="12"></label>
@@ -39,7 +39,7 @@
 <p class="note warn"><strong>.22 LR:</strong> transsonisk rimfire er mer kresen. Bruk faktisk DOPE for presis langholdsskyting.</p>
 </aside>
 <section class="panel">
-<div id="cards" class="cards"></div>
+<div id="cards" class="cards"><div class="card"><div class="v">Laster…</div><div class="k">ballistikkmotor</div></div></div>
 <h3>Kulebane relativt siktelinje</h3>
 <div class="chart"><canvas id="dropChart" width="1000" height="320"></canvas><div id="dropTip" class="tooltip"></div></div>
 <p class="hint">Hover med mus. På mobil: trykk i grafen for å feste avlesninga.</p>
@@ -54,5 +54,6 @@
 </div>
 <details><summary>Datagrunnlag og metode</summary><p class="mini">Centerfire bruker Norma sine publiserte V0- og G1-BC-data. .22 LR bruker oppgitt G1 der den finnes og tydelig merket effektiv G1 der Norma bare publiserer hastighetstabell. Modellen inkluderer tyngdekraft, lufttetthet, relativ luftstrøm og standard stykkevis G1-retardasjon. Ikke Coriolis, spindrift eller aerodynamisk jump.</p></details>
 <p class="mini">Verifiser alltid mot faktisk rifle og kronograf. Fabrikk-V0 er testløpsdata, og ekte løp har den frekke vanen å være forskjellige.</p>
+<noscript><p class="note warn">JavaScript må være aktivert for at kalkulatoren skal fungere.</p></noscript>
 </main>
 </body></html>
