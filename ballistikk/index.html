@@ -3,57 +3,92 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Interaktiv ballistikk-kalkulator for 6,5x55, .308 Winchester og .22 LR.">
+<meta name="description" content="Interaktiv ballistikk-kalkulator for 6,5x55, .308 Winchester og .22 LR med våpenprofiler og feltjustering i MOA.">
+<meta name="theme-color" content="#0b0d10">
 <title>Ballistikk-kalkulator</title>
-<link rel="stylesheet" href="./style.css?v=20261107-2">
-<script defer src="./app.js?v=20261107-2"></script>
+<link rel="stylesheet" href="./style.css?v=20261107-3">
+<script defer src="./app.js?v=20261107-3"></script>
 </head>
 <body>
 <main>
 <header class="top">
-<div><h1>Ballistikk-kalkulator</h1><p>6,5×55 SE, .308 Winchester og .22 LR. Kulebane, vindavdrift, hastighet og energi, med hover direkte i grafene.</p></div>
-<span class="badge">3DoF · RK4 · G1</span>
+  <div><h1>Ballistikk-kalkulator</h1><p>Våpenprofiler, feltjustering, kulebane, vind, hastighet og energi for 6,5×55 SE, .308 Winchester og .22 LR.</p></div>
+  <span class="badge">3DoF · RK4 · G1 · lokalt lagret</span>
 </header>
+
 <div class="grid">
-<aside class="panel">
-<h2>Ammunisjon</h2>
-<div class="filters">
-<label>Kaliber<select id="caliberFilter"><option value="all">Alle</option><option value="6.5x55">6,5×55 SE</option><option value="308">.308 Win</option><option value="22lr">.22 LR</option></select></label>
-<label>Kategori<select id="typeFilter"><option value="all">Alle</option><option value="hunting">Jakt</option><option value="training">Trening / match</option></select></label>
-</div>
-<div id="loadList" class="ammo-groups"></div>
-<div class="actions"><button id="clearBtn" type="button">Fjern alle</button><button id="sixBtn" type="button">Standard 6,5×55</button></div>
-<h2 class="space">Forhold</h2>
-<div class="controls">
-<label>Vind m/s (+ fra venstre)<input id="wind" type="number" step=".5" value="12"></label>
-<label>Vindvinkel °<input id="windAngle" type="number" min="0" max="180" step="5" value="90"></label>
-<label>Innskyting m<input id="zero" type="number" min="10" max="500" step="5" value="100"></label>
-<label>Siktehøyde mm<input id="sight" type="number" min="0" max="120" step="1" value="40"></label>
-<label>Temperatur °C<input id="temp" type="number" min="-40" max="50" step="1" value="15"></label>
-<label>Lufttrykk hPa<input id="pressure" type="number" min="750" max="1100" step="1" value="1013"></label>
-<label>V0-korreksjon m/s<input id="v0Offset" type="number" min="-150" max="150" step="1" value="0"></label>
-<label>Maks avstand m<input id="maxRange" type="number" min="50" max="1000" step="25" value="300"></label>
-<label class="full">Les av ved <span id="rangeLabel">150</span> m<input id="readRange" type="range" min="10" max="300" step="5" value="150"></label>
-</div>
-<p class="note"><strong>V0-korreksjon:</strong> Hvis eska sier 820 m/s og kronografen sier 790, sett −30 m/s.</p>
-<p class="note warn"><strong>.22 LR:</strong> transsonisk rimfire er mer kresen. Bruk faktisk DOPE for presis langholdsskyting.</p>
+<aside class="panel controls-panel">
+  <section id="profilePanel" class="profile-section">
+    <div class="section-head"><h2>Våpenprofil</h2><span id="saveState" class="save-state">Lagret lokalt</span></div>
+    <label>Profil<select id="profileSelect"></select></label>
+    <div class="actions profile-actions">
+      <button id="addProfileBtn" type="button">Ny profil</button>
+      <button id="renameProfileBtn" type="button">Gi navn</button>
+      <button id="deleteProfileBtn" type="button">Slett</button>
+    </div>
+    <div class="controls profile-controls">
+      <label>Kaliber<select id="profileCaliber"><option value="6.5x55">6,5×55 SE</option><option value="308">.308 Win</option><option value="22lr">.22 LR</option></select></label>
+      <label>Innskyting m<input id="zero" type="number" min="10" max="500" step="5" value="100"></label>
+      <label class="full">Siktehøyde mm<input id="sight" type="number" min="0" max="120" step="1" value="40"></label>
+    </div>
+    <p class="note"><strong>Profilen følger våpenet:</strong> kaliber, innskytingsavstand, siktehøyde, valgte patroner og hovedladning huskes i denne nettleseren.</p>
+  </section>
+
+  <section class="space">
+    <div class="section-head"><h2>Ammunisjon</h2><span id="ammoCaliberLabel" class="mini-badge"></span></div>
+    <label>Kategori<select id="typeFilter"><option value="all">Alle</option><option value="hunting">Jakt</option><option value="training">Trening / match</option></select></label>
+    <div id="loadList" class="ammo-groups"></div>
+    <div class="actions"><button id="clearBtn" type="button">Fjern alle</button><button id="defaultAmmoBtn" type="button">Standardvalg</button></div>
+  </section>
+
+  <section class="space">
+    <h2>Forhold</h2>
+    <div class="controls">
+      <label>Vind m/s (+ fra venstre)<input id="wind" type="number" step=".5" value="12"></label>
+      <label>Vindvinkel °<input id="windAngle" type="number" min="0" max="180" step="5" value="90"></label>
+      <label>Temperatur °C<input id="temp" type="number" min="-40" max="50" step="1" value="15"></label>
+      <label>Lufttrykk hPa<input id="pressure" type="number" min="750" max="1100" step="1" value="1013"></label>
+      <label>V0-korreksjon m/s<input id="v0Offset" type="number" min="-150" max="150" step="1" value="0"></label>
+      <label>Maks avstand m<input id="maxRange" type="number" min="50" max="1000" step="25" value="300"></label>
+      <label class="full">Feltavstand <span id="rangeLabel">150</span> m<input id="readRange" type="range" min="10" max="300" step="5" value="150"></label>
+    </div>
+    <p class="note"><strong>V0-korreksjon:</strong> hvis eska sier 820 m/s og kronografen sier 790, sett −30 m/s.</p>
+    <p class="note warn"><strong>.22 LR:</strong> transsonisk rimfire er mer kresen. Bruk faktisk DOPE når presisjon betyr noe.</p>
+  </section>
 </aside>
-<section class="panel">
-<div id="cards" class="cards"><div class="card"><div class="v">Laster…</div><div class="k">ballistikkmotor</div></div></div>
-<h3>Kulebane relativt siktelinje</h3>
-<div class="chart"><canvas id="dropChart" width="1000" height="320"></canvas><div id="dropTip" class="tooltip"></div></div>
-<p class="hint">Hover med mus. På mobil: trykk i grafen for å feste avlesninga.</p>
-<h3>Vindavdrift</h3>
-<div class="chart"><canvas id="windChart" width="1000" height="320"></canvas><div id="windTip" class="tooltip"></div></div>
-<h3>Hastighet</h3>
-<div class="chart"><canvas id="velChart" width="1000" height="320"></canvas><div id="velTip" class="tooltip"></div></div>
-<div id="legend" class="legend"></div>
-<h3>Tabell for hovedladning</h3>
-<div class="tablewrap"><table><thead><tr><th>m</th><th>Bane cm</th><th>Vind cm</th><th>mrad</th><th>MOA</th><th>V m/s</th><th>J</th></tr></thead><tbody id="tbody"></tbody></table></div>
+
+<section class="panel results-panel">
+  <div class="primary-picker">
+    <label>Hovedladning for feltkort<select id="primaryLoadSelect"></select></label>
+  </div>
+
+  <section id="fieldCard" class="field-card" aria-live="polite">
+    <div class="field-head"><div><span class="eyebrow">Feltkort</span><strong id="fieldDistance">150 m</strong></div><span id="fieldZero" class="field-zero">100 m innskutt</span></div>
+    <div class="dial-grid">
+      <div class="dial-card elevation"><span class="dial-label">Høyde</span><strong id="elevDial">UP 0,00 MOA</strong><span id="elevClicks">0 klikk · ¼ MOA</span><small id="elevImpact">0,0 cm treffavvik</small></div>
+      <div class="dial-card windage"><span class="dial-label">Vind</span><strong id="windDial">LEFT 0,00 MOA</strong><span id="windClicks">0 klikk · ¼ MOA</span><small id="windImpact">0,0 cm treffavvik</small></div>
+    </div>
+    <p class="field-note" id="fieldLoad"></p>
+  </section>
+
+  <div id="cards" class="cards"><div class="card"><div class="v">Laster…</div><div class="k">ballistikkmotor</div></div></div>
+
+  <h3>Kulebane relativt siktelinje</h3>
+  <div class="chart"><canvas id="dropChart" width="1000" height="320"></canvas><div id="dropTip" class="tooltip"></div></div>
+  <p class="hint">Hover med mus. På mobil: trykk i grafen for å feste avlesninga.</p>
+  <h3>Vindavdrift</h3>
+  <div class="chart"><canvas id="windChart" width="1000" height="320"></canvas><div id="windTip" class="tooltip"></div></div>
+  <h3>Hastighet</h3>
+  <div class="chart"><canvas id="velChart" width="1000" height="320"></canvas><div id="velTip" class="tooltip"></div></div>
+  <div id="legend" class="legend"></div>
+
+  <h3>Feltabell for hovedladning</h3>
+  <div class="tablewrap"><table><thead><tr><th>m</th><th>Bane cm</th><th>Høyde MOA</th><th>¼-klikk</th><th>Vind cm</th><th>Vind MOA</th><th>¼-klikk</th><th>V m/s</th><th>J</th></tr></thead><tbody id="tbody"></tbody></table></div>
 </section>
 </div>
-<details><summary>Datagrunnlag og metode</summary><p class="mini">Centerfire bruker Norma sine publiserte V0- og G1-BC-data. .22 LR bruker oppgitt G1 der den finnes og tydelig merket effektiv G1 der Norma bare publiserer hastighetstabell. Modellen inkluderer tyngdekraft, lufttetthet, relativ luftstrøm og standard stykkevis G1-retardasjon. Ikke Coriolis, spindrift eller aerodynamisk jump.</p></details>
-<p class="mini">Verifiser alltid mot faktisk rifle og kronograf. Fabrikk-V0 er testløpsdata, og ekte løp har den frekke vanen å være forskjellige.</p>
+
+<details><summary>Datagrunnlag og metode</summary><p class="mini">Centerfire bruker publiserte V0- og G1-BC-data. .22 LR bruker oppgitt G1 der den finnes og tydelig merket effektiv G1 der produsenten bare publiserer hastighetstabell. Modellen inkluderer tyngdekraft, lufttetthet, relativ luftstrøm og standard stykkevis G1-retardasjon. Ikke Coriolis, spindrift eller aerodynamisk jump.</p></details>
+<p class="mini">¼-MOA-klikk rundes til nærmeste hele klikk. Verifiser alltid mot faktisk rifle og kronograf før du stoler på feltkortet.</p>
 <noscript><p class="note warn">JavaScript må være aktivert for at kalkulatoren skal fungere.</p></noscript>
 </main>
 </body></html>
