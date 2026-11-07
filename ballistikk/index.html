@@ -5,15 +5,24 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Interaktiv ballistikk-kalkulator for 6,5x55, .308 Winchester og .22 LR med våpenprofiler og feltjustering i MOA.">
 <meta name="theme-color" content="#0b0d10">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ballistikk">
 <title>Ballistikk-kalkulator</title>
-<link rel="stylesheet" href="./style.css?v=20261107-3">
-<script defer src="./app.js?v=20261107-3"></script>
+<link rel="manifest" href="./manifest.webmanifest?v=20261107-4">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="stylesheet" href="./style.css?v=20261107-4">
+<script defer src="./app.js?v=20261107-4"></script>
 </head>
 <body>
 <main>
 <header class="top">
   <div><h1>Ballistikk-kalkulator</h1><p>Våpenprofiler, feltjustering, kulebane, vind, hastighet og energi for 6,5×55 SE, .308 Winchester og .22 LR.</p></div>
+  <div class="top-actions">
+  <button id="installBtn" class="install-btn" type="button" hidden>Installer app</button>
   <span class="badge">3DoF · RK4 · G1 · lokalt lagret</span>
+</div>
 </header>
 
 <div class="grid">
@@ -27,16 +36,19 @@
       <button id="deleteProfileBtn" type="button">Slett</button>
     </div>
     <div class="controls profile-controls">
-      <label>Kaliber<select id="profileCaliber"><option value="6.5x55">6,5×55 SE</option><option value="308">.308 Win</option><option value="22lr">.22 LR</option></select></label>
       <label>Innskyting m<input id="zero" type="number" min="10" max="500" step="5" value="100"></label>
-      <label class="full">Siktehøyde mm<input id="sight" type="number" min="0" max="120" step="1" value="40"></label>
+      <label>Siktehøyde mm<input id="sight" type="number" min="0" max="120" step="1" value="40"></label>
     </div>
     <p class="note"><strong>Profilen følger våpenet:</strong> kaliber, innskytingsavstand, siktehøyde, valgte patroner og hovedladning huskes i denne nettleseren.</p>
   </section>
 
   <section class="space">
     <div class="section-head"><h2>Ammunisjon</h2><span id="ammoCaliberLabel" class="mini-badge"></span></div>
-    <label>Kategori<select id="typeFilter"><option value="all">Alle</option><option value="hunting">Jakt</option><option value="training">Trening / match</option></select></label>
+    <div class="ammo-filters">
+      <label>Kaliber<select id="profileCaliber"><option value="6.5x55">6,5×55 SE</option><option value="308">.308 Win</option><option value="22lr">.22 LR</option></select></label>
+      <label>Bruk<select id="typeFilter"><option value="all">Alle</option><option value="hunting">Jakt</option><option value="training">Trening / match</option></select></label>
+      <label>Kuletype<select id="bulletFilter"><option value="all">Alle</option><option value="fmj">Helmantel</option><option value="match">Match / ikke-eksp.</option><option value="expanding">Ekspanderende</option><option value="rimfire">.22 LR</option></select></label>
+    </div>
     <div id="loadList" class="ammo-groups"></div>
     <div class="actions"><button id="clearBtn" type="button">Fjern alle</button><button id="defaultAmmoBtn" type="button">Standardvalg</button></div>
   </section>
@@ -44,7 +56,7 @@
   <section class="space">
     <h2>Forhold</h2>
     <div class="controls">
-      <label>Vind m/s (+ fra venstre)<input id="wind" type="number" step=".5" value="12"></label>
+      <label>Vind m/s (+ fra venstre)<input id="wind" type="number" step=".5" value="0"></label>
       <label>Vindvinkel °<input id="windAngle" type="number" min="0" max="180" step="5" value="90"></label>
       <label>Temperatur °C<input id="temp" type="number" min="-40" max="50" step="1" value="15"></label>
       <label>Lufttrykk hPa<input id="pressure" type="number" min="750" max="1100" step="1" value="1013"></label>
