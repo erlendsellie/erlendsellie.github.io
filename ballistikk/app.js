@@ -39,6 +39,7 @@ const chartStates=new Map();
 
 function defaultState(){
   return {
+    version:4,
     profiles:[{id:'rifle-65',name:'6,5×55-rifle',caliber:'6.5x55',zero:100,sight:40,selectedLoadIds:[...DEFAULT_LOADS['6.5x55']],primaryLoadId:'jm120'}],
     activeProfileId:'rifle-65',
     ui:{typeFilter:'all',bulletFilter:'all',wind:0,windAngle:90,temp:15,pressure:1013,v0Offset:0,maxRange:300,readRange:150}
@@ -50,6 +51,8 @@ function loadState(){
     if(!raw)return defaultState();
     const parsed=JSON.parse(raw);
     if(!parsed||!Array.isArray(parsed.profiles)||!parsed.profiles.length)return defaultState();
+    if((parsed.version||0)<4&&parsed.ui&&parsed.ui.wind===12)parsed.ui.wind=0;
+    parsed.version=4;
     parsed.ui={...defaultState().ui,...(parsed.ui||{})};
     parsed.profiles=parsed.profiles.map((p,i)=>({
       id:p.id||`profile-${Date.now()}-${i}`,
