@@ -2,31 +2,35 @@ const COLORS=['#7db7ff','#ffb86b','#87e39b','#d7a5ff','#ff86a8','#74d9d0','#f0d2
 const STORAGE_KEY='ballistikk-state-v3';
 const CLICK_MOA=0.25;
 const loads=[
-  {id:'jm120',cal:'6.5x55',type:'training',name:'Norma Jaktmatch Elektron 7,8 g / 120 gr',short:'JM 120',v0:820,bc:.428,mass:7.8,badge:'eldre',badgeClass:'old',source:'Norma eldre katalog'},
-  {id:'jm124',cal:'6.5x55',type:'training',name:'Norma Jaktmatch 8,0 g / 124 gr',short:'JM 124',v0:820,bc:.331,mass:8.0,source:'Norma'},
-  {id:'gt13065',cal:'6.5x55',type:'training',name:'Norma Golden Target 8,4 g / 130 gr',short:'GT 130',v0:830,bc:.548,mass:8.42,badge:'match',badgeClass:'new',source:'Norma'},
-  {id:'gt14365',cal:'6.5x55',type:'training',name:'Norma Golden Target 9,27 g / 143 gr',short:'GT 143',v0:810,bc:.635,mass:9.27,badge:'match',badgeClass:'new',source:'Norma'},
-  {id:'oryx65',cal:'6.5x55',type:'hunting',name:'Norma Oryx 10,1 g / 156 gr',short:'Oryx 156',v0:760,bc:.348,mass:10.1,source:'Norma'},
-  {id:'oryxs65',cal:'6.5x55',type:'hunting',name:'Norma Oryx Silencer 10,1 g / 156 gr',short:'Oryx Sil.',v0:780,bc:.348,mass:10.1,badge:'utgått 2026',badgeClass:'old',source:'Norma'},
-  {id:'vulkan65',cal:'6.5x55',type:'hunting',name:'Norma Vulkan 10,1 g / 156 gr',short:'Vulkan',v0:760,bc:.354,mass:10.1,source:'Norma'},
-  {id:'whitetail65',cal:'6.5x55',type:'hunting',name:'Norma Whitetail 10,1 g / 156 gr',short:'Whitetail',v0:770,bc:.276,mass:10.1,source:'Norma'},
-  {id:'evo65',cal:'6.5x55',type:'hunting',name:'Norma EVOSTRIKE 6,0 g / 93 gr',short:'EVOSTRIKE',v0:1000,bc:.309,mass:6.0,badge:'utgått 2026',badgeClass:'old',source:'Norma'},
-  {id:'odin65',cal:'6.5x55',type:'hunting',name:'Norma ODIN 7,8 g / 120 gr',short:'ODIN 120',v0:860,bc:.350,mass:7.8,badge:'ny 2026',badgeClass:'new',source:'Norma'},
-  {id:'jm308',cal:'308',type:'training',name:'Norma Jaktmatch 9,7 g / 150 gr',short:'JM .308',v0:810,bc:.423,mass:9.7,source:'Norma'},
-  {id:'gt168308',cal:'308',type:'training',name:'Norma Golden Target 10,9 g / 168 gr',short:'GT 168',v0:800,bc:.424,mass:10.9,badge:'match',badgeClass:'new',source:'Norma'},
-  {id:'gt175308',cal:'308',type:'training',name:'Norma Golden Target 11,3 g / 175 gr',short:'GT 175',v0:790,bc:.547,mass:11.3,badge:'match',badgeClass:'new',source:'Norma'},
-  {id:'oryx308',cal:'308',type:'hunting',name:'Norma Oryx 11,7 g / 180 gr',short:'Oryx .308',v0:796,bc:.354,mass:11.7,source:'Norma'},
-  {id:'eco308',cal:'308',type:'hunting',name:'Norma ECOSTRIKE 9,7 g / 150 gr',short:'ECO .308',v0:860,bc:.376,mass:9.7,source:'Norma'},
-  {id:'tip308',cal:'308',type:'hunting',name:'Norma TIPSTRIKE 11,0 g / 170 gr',short:'TIP .308',v0:800,bc:.454,mass:11.0,source:'Norma'},
-  {id:'bond308',cal:'308',type:'hunting',name:'Norma BONDSTRIKE 11,7 g / 180 gr',short:'BOND .308',v0:800,bc:.615,mass:11.7,source:'Norma'},
-  {id:'odin150308',cal:'308',type:'hunting',name:'Norma ODIN 9,7 g / 150 gr',short:'ODIN 150',v0:870,bc:.419,mass:9.7,badge:'ny 2026',badgeClass:'new',source:'Norma'},
-  {id:'odin162308',cal:'308',type:'hunting',name:'Norma ODIN 10,5 g / 162 gr',short:'ODIN 162',v0:825,bc:.416,mass:10.5,badge:'ny 2026',badgeClass:'new',source:'Norma'},
-  {id:'tac22',cal:'22lr',type:'training',name:'Norma TAC-22 2,6 g / 40 gr',short:'TAC-22',v0:330,bc:.132,mass:2.6,source:'Norma'},
-  {id:'bio22',cal:'22lr',type:'training',name:'Norma Biathlon Match-22 2,6 g / 40 gr',short:'Biathlon',v0:320,bc:.135,mass:2.6,source:'Norma'},
-  {id:'match22',cal:'22lr',type:'training',name:'Norma Match-22 2,6 g / 40 gr',short:'Match-22',v0:330,bc:.1062,bcInferred:true,mass:2.6,source:'Effektiv G1 fra Norma V0/V100'},
-  {id:'sub22',cal:'22lr',type:'training',name:'Norma Subsonic-22 2,6 g / 40 gr',short:'Subsonic',v0:315,bc:.1103,bcInferred:true,mass:2.6,source:'Effektiv G1 fra Norma V0/V100'}
+  {id:'jm120',cal:'6.5x55',type:'training',bullet:'fmj',name:'Norma Jaktmatch Elektron 7,8 g / 120 gr',short:'JM 120',v0:820,bc:.428,mass:7.8,badge:'eldre',badgeClass:'old',source:'Norma eldre katalog'},
+  {id:'jm124',cal:'6.5x55',type:'training',bullet:'fmj',name:'Norma Jaktmatch 8,0 g / 124 gr',short:'JM 124',v0:820,bc:.331,mass:8.0,source:'Norma'},
+  {id:'gt13065',cal:'6.5x55',type:'training',bullet:'match',name:'Norma Golden Target 8,4 g / 130 gr',short:'GT 130',v0:830,bc:.548,mass:8.42,badge:'match',badgeClass:'new',source:'Norma'},
+  {id:'gt14365',cal:'6.5x55',type:'training',bullet:'match',name:'Norma Golden Target 9,27 g / 143 gr',short:'GT 143',v0:810,bc:.635,mass:9.27,badge:'match',badgeClass:'new',source:'Norma'},
+  {id:'oryx65',cal:'6.5x55',type:'hunting',bullet:'expanding',name:'Norma Oryx 10,1 g / 156 gr',short:'Oryx 156',v0:760,bc:.348,mass:10.1,source:'Norma'},
+  {id:'oryxs65',cal:'6.5x55',type:'hunting',bullet:'expanding',name:'Norma Oryx Silencer 10,1 g / 156 gr',short:'Oryx Sil.',v0:780,bc:.348,mass:10.1,badge:'utgått 2026',badgeClass:'old',source:'Norma'},
+  {id:'vulkan65',cal:'6.5x55',type:'hunting',bullet:'expanding',name:'Norma Vulkan 10,1 g / 156 gr',short:'Vulkan',v0:760,bc:.354,mass:10.1,source:'Norma'},
+  {id:'whitetail65',cal:'6.5x55',type:'hunting',bullet:'expanding',name:'Norma Whitetail 10,1 g / 156 gr',short:'Whitetail',v0:770,bc:.276,mass:10.1,source:'Norma'},
+  {id:'evo65',cal:'6.5x55',type:'hunting',bullet:'expanding',name:'Norma EVOSTRIKE 6,0 g / 93 gr',short:'EVOSTRIKE',v0:1000,bc:.309,mass:6.0,badge:'utgått 2026',badgeClass:'old',source:'Norma'},
+  {id:'odin65',cal:'6.5x55',type:'hunting',bullet:'expanding',name:'Norma ODIN 7,8 g / 120 gr',short:'ODIN 120',v0:860,bc:.350,mass:7.8,badge:'ny 2026',badgeClass:'new',source:'Norma'},
+  {id:'blade65',cal:'6.5x55',type:'hunting',bullet:'expanding',name:'Sako Powerhead Blade 7,8 g / 120 gr',short:'Blade 120',v0:855,bc:.348,mass:7.8,badge:'blyfri',badgeClass:'new',source:'Sako'},
+  {id:'fusion14065',cal:'6.5x55',type:'hunting',bullet:'expanding',name:'Federal Fusion 9,07 g / 140 gr',short:'Fusion 140',v0:771,bc:.497,mass:9.07,badge:'bonded',badgeClass:'new',source:'Federal'},
+  {id:'jm308',cal:'308',type:'training',bullet:'fmj',name:'Norma Jaktmatch 9,7 g / 150 gr',short:'JM .308',v0:810,bc:.423,mass:9.7,source:'Norma'},
+  {id:'gt168308',cal:'308',type:'training',bullet:'match',name:'Norma Golden Target 10,9 g / 168 gr',short:'GT 168',v0:800,bc:.424,mass:10.9,badge:'match',badgeClass:'new',source:'Norma'},
+  {id:'gt175308',cal:'308',type:'training',bullet:'match',name:'Norma Golden Target 11,3 g / 175 gr',short:'GT 175',v0:790,bc:.547,mass:11.3,badge:'match',badgeClass:'new',source:'Norma'},
+  {id:'oryx308',cal:'308',type:'hunting',bullet:'expanding',name:'Norma Oryx 11,7 g / 180 gr',short:'Oryx .308',v0:796,bc:.354,mass:11.7,source:'Norma'},
+  {id:'eco308',cal:'308',type:'hunting',bullet:'expanding',name:'Norma ECOSTRIKE 9,7 g / 150 gr',short:'ECO .308',v0:860,bc:.376,mass:9.7,source:'Norma'},
+  {id:'tip308',cal:'308',type:'hunting',bullet:'expanding',name:'Norma TIPSTRIKE 11,0 g / 170 gr',short:'TIP .308',v0:800,bc:.454,mass:11.0,source:'Norma'},
+  {id:'bond308',cal:'308',type:'hunting',bullet:'expanding',name:'Norma BONDSTRIKE 11,7 g / 180 gr',short:'BOND .308',v0:800,bc:.615,mass:11.7,source:'Norma'},
+  {id:'odin150308',cal:'308',type:'hunting',bullet:'expanding',name:'Norma ODIN 9,7 g / 150 gr',short:'ODIN 150',v0:870,bc:.419,mass:9.7,badge:'ny 2026',badgeClass:'new',source:'Norma'},
+  {id:'odin162308',cal:'308',type:'hunting',bullet:'expanding',name:'Norma ODIN 10,5 g / 162 gr',short:'ODIN 162',v0:825,bc:.416,mass:10.5,badge:'ny 2026',badgeClass:'new',source:'Norma'},
+  {id:'fusion150308',cal:'308',type:'hunting',bullet:'expanding',name:'Federal Fusion 9,72 g / 150 gr',short:'Fusion 150',v0:860,bc:.387,mass:9.72,badge:'bonded',badgeClass:'new',source:'Federal'},
+  {id:'tac22',cal:'22lr',type:'training',bullet:'rimfire',name:'Norma TAC-22 2,6 g / 40 gr',short:'TAC-22',v0:330,bc:.132,mass:2.6,source:'Norma'},
+  {id:'bio22',cal:'22lr',type:'training',bullet:'rimfire',name:'Norma Biathlon Match-22 2,6 g / 40 gr',short:'Biathlon',v0:320,bc:.135,mass:2.6,source:'Norma'},
+  {id:'match22',cal:'22lr',type:'training',bullet:'rimfire',name:'Norma Match-22 2,6 g / 40 gr',short:'Match-22',v0:330,bc:.1062,bcInferred:true,mass:2.6,source:'Effektiv G1 fra Norma V0/V100'},
+  {id:'sub22',cal:'22lr',type:'training',bullet:'rimfire',name:'Norma Subsonic-22 2,6 g / 40 gr',short:'Subsonic',v0:315,bc:.1103,bcInferred:true,mass:2.6,source:'Effektiv G1 fra Norma V0/V100'}
 ];
 const CAL_NAMES={'6.5x55':'6,5×55 SE','308':'.308 Winchester','22lr':'.22 LR'};
+const BULLET_NAMES={fmj:'Helmantel',match:'Match / ikke-eksp.',expanding:'Ekspanderende',rimfire:'.22 LR'};
 const DEFAULT_LOADS={'6.5x55':['jm120','jm124','oryx65'],'308':['jm308','gt168308','gt175308'],'22lr':['tac22','match22']};
 const G1=[[4230,1.477404177730177e-4,1.9565],[3680,1.920339268755614e-4,1.925],[3450,2.894751026819746e-4,1.875],[3295,4.349905111115636e-4,1.825],[3130,6.520421871892662e-4,1.775],[2960,9.748073694078696e-4,1.725],[2830,1.453721560187286e-3,1.675],[2680,2.162887202930376e-3,1.625],[2460,3.209559783129881e-3,1.575],[2225,3.904368218691249e-3,1.55],[2015,3.222942271262336e-3,1.575],[1890,2.203329542297809e-3,1.625],[1810,1.511001028891904e-3,1.675],[1730,8.609957592468259e-4,1.75],[1595,4.086146797305117e-4,1.85],[1520,1.954473210037398e-4,1.95],[1420,5.431896266462351e-5,2.125],[1360,8.847742581674416e-6,2.375],[1315,1.456922328720298e-6,2.625],[1280,2.419485191895565e-7,2.875],[1220,1.657956321067612e-8,3.25],[1185,4.745469537157371e-10,3.75],[1150,1.379746590025088e-11,4.25],[1100,4.070157961147882e-13,4.75],[1060,2.938236954847331e-14,5.125],[1025,1.228597370774746e-14,5.25],[980,2.916938264100495e-14,5.125],[945,3.855099424807451e-13,4.75],[905,1.185097045689854e-11,4.25],[860,3.566129470974951e-10,3.75],[810,1.045513263966272e-8,3.25],[780,1.291159200846216e-7,2.875],[750,6.824429329105383e-7,2.625],[700,3.569169672385163e-6,2.375],[640,1.839015095899579e-5,2.125],[600,5.71117468873424e-5,1.95],[550,9.226557091973427e-5,1.875],[250,9.337991957131389e-5,1.875],[100,7.225247327590413e-5,1.925],[65,5.792684957074546e-5,1.975],[0,5.206214107320588e-5,2]];
 const g=9.80665,$=id=>document.getElementById(id);
@@ -37,7 +41,7 @@ function defaultState(){
   return {
     profiles:[{id:'rifle-65',name:'6,5×55-rifle',caliber:'6.5x55',zero:100,sight:40,selectedLoadIds:[...DEFAULT_LOADS['6.5x55']],primaryLoadId:'jm120'}],
     activeProfileId:'rifle-65',
-    ui:{typeFilter:'all',wind:12,windAngle:90,temp:15,pressure:1013,v0Offset:0,maxRange:300,readRange:150}
+    ui:{typeFilter:'all',bulletFilter:'all',wind:0,windAngle:90,temp:15,pressure:1013,v0Offset:0,maxRange:300,readRange:150}
   };
 }
 function loadState(){
@@ -109,18 +113,18 @@ function normalizeProfileSelection(p){
 function loadProfileIntoUI(){
   const p=activeProfile();normalizeProfileSelection(p);
   $('profileCaliber').value=p.caliber;$('zero').value=p.zero;$('sight').value=p.sight;
-  $('typeFilter').value=state.ui.typeFilter;$('wind').value=state.ui.wind;$('windAngle').value=state.ui.windAngle;$('temp').value=state.ui.temp;$('pressure').value=state.ui.pressure;$('v0Offset').value=state.ui.v0Offset;$('maxRange').value=state.ui.maxRange;$('readRange').value=state.ui.readRange;
+  $('typeFilter').value=state.ui.typeFilter;$('bulletFilter').value=state.ui.bulletFilter||'all';$('wind').value=state.ui.wind;$('windAngle').value=state.ui.windAngle;$('temp').value=state.ui.temp;$('pressure').value=state.ui.pressure;$('v0Offset').value=state.ui.v0Offset;$('maxRange').value=state.ui.maxRange;$('readRange').value=state.ui.readRange;
   $('ammoCaliberLabel').textContent=CAL_NAMES[p.caliber];
   renderLoadList();renderPrimaryPicker();update(false);
 }
 function renderLoadList(){
-  const p=activeProfile(),type=$('typeFilter').value,root=$('loadList');root.innerHTML='';
-  const matches=loads.filter(l=>l.cal===p.caliber&&(type==='all'||l.type===type));
+  const p=activeProfile(),type=$('typeFilter').value,bullet=$('bulletFilter').value,root=$('loadList');root.innerHTML='';
+  const matches=loads.filter(l=>l.cal===p.caliber&&(type==='all'||l.type===type)&&(bullet==='all'||l.bullet===bullet));
   const group=document.createElement('div');group.className='ammo-group';group.innerHTML='<div class="ammo-head">'+CAL_NAMES[p.caliber]+'</div><div class="ammo-list"></div>';
   const list=group.querySelector('.ammo-list');
   for(const l of matches){
-    const row=document.createElement('label');row.className='loadrow';const badge=l.badge?'<span class="pill '+(l.badgeClass||'')+'">'+l.badge+'</span>':'';
-    row.innerHTML='<input type="checkbox" '+(p.selectedLoadIds.includes(l.id)?'checked':'')+'><span><strong>'+l.name+badge+'</strong><br><small>V0 '+l.v0+' m/s · '+(l.bcInferred?'eff. ':'')+'G1 BC '+l.bc+' · '+(l.type==='hunting'?'jakt':'trening/match')+'</small></span>';
+    const row=document.createElement('label');row.className='loadrow';const bulletBadge='<span class="pill bullet '+l.bullet+'">'+BULLET_NAMES[l.bullet]+'</span>';const badge=l.badge?'<span class="pill '+(l.badgeClass||'')+'">'+l.badge+'</span>':'';
+    row.innerHTML='<input type="checkbox" '+(p.selectedLoadIds.includes(l.id)?'checked':'')+'><span><strong>'+l.name+bulletBadge+badge+'</strong><br><small>V0 '+l.v0+' m/s · '+(l.bcInferred?'eff. ':'')+'G1 BC '+l.bc+' · '+(l.type==='hunting'?'jakt':'trening/match')+'</small></span>';
     const cb=row.querySelector('input');cb.addEventListener('change',()=>transition(()=>{markDirty();if(cb.checked){if(!p.selectedLoadIds.includes(l.id))p.selectedLoadIds.push(l.id)}else p.selectedLoadIds=p.selectedLoadIds.filter(id=>id!==l.id);normalizeProfileSelection(p);renderLoadList();renderPrimaryPicker();update(false);saveState()}));list.appendChild(row)
   }
   root.appendChild(group);
@@ -133,7 +137,7 @@ function renderPrimaryPicker(){
   sel.disabled=!chosen.length;
 }
 function syncProfileFromInputs(){const p=activeProfile();p.zero=clamp($('zero').value,10,500,100);p.sight=clamp($('sight').value,0,120,40)}
-function syncUiState(){state.ui.typeFilter=$('typeFilter').value;state.ui.wind=clamp($('wind').value,-60,60,12);state.ui.windAngle=clamp($('windAngle').value,0,180,90);state.ui.temp=clamp($('temp').value,-40,50,15);state.ui.pressure=clamp($('pressure').value,750,1100,1013);state.ui.v0Offset=clamp($('v0Offset').value,-150,150,0);state.ui.maxRange=clamp($('maxRange').value,50,1000,300);state.ui.readRange=clamp($('readRange').value,10,state.ui.maxRange,150)}
+function syncUiState(){state.ui.typeFilter=$('typeFilter').value;state.ui.bulletFilter=$('bulletFilter').value;state.ui.wind=clamp($('wind').value,-60,60,0);state.ui.windAngle=clamp($('windAngle').value,0,180,90);state.ui.temp=clamp($('temp').value,-40,50,15);state.ui.pressure=clamp($('pressure').value,750,1100,1013);state.ui.v0Offset=clamp($('v0Offset').value,-150,150,0);state.ui.maxRange=clamp($('maxRange').value,50,1000,300);state.ui.readRange=clamp($('readRange').value,10,state.ui.maxRange,150)}
 function clearCharts(){for(const id of ['dropChart','windChart','velChart']){const c=$(id),ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height)}chartStates.clear()}
 function update(persist=true){
   syncProfileFromInputs();syncUiState();const p=activeProfile();
@@ -157,14 +161,40 @@ function createProfile(){
 function renameProfile(){const p=activeProfile(),name=prompt('Nytt navn:',p.name);if(!name)return;p.name=name.trim()||p.name;saveState();renderProfiles();$('profileSelect').value=p.id;update(false)}
 function deleteProfile(){if(state.profiles.length===1)return alert('Du må ha minst én våpenprofil.');const p=activeProfile();if(!confirm(`Slett profilen «${p.name}»?`))return;state.profiles=state.profiles.filter(x=>x.id!==p.id);state.activeProfileId=state.profiles[0].id;saveState();renderProfiles();loadProfileIntoUI()}
 
+function setupPwa(){
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}),{once:true});
+  }
+  const btn=$('installBtn');
+  const standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+  const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  let installPrompt=null;
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();installPrompt=e;
+    if(btn&&!standalone){btn.hidden=false;btn.textContent='Installer app'}
+  });
+  if(btn&&ios&&!standalone){btn.hidden=false;btn.textContent='Installer app'}
+  if(btn)btn.addEventListener('click',async()=>{
+    if(installPrompt){
+      installPrompt.prompt();
+      await installPrompt.userChoice.catch(()=>null);
+      installPrompt=null;btn.hidden=true;
+    }else if(ios){
+      alert('På iPhone/iPad: trykk Del i Safari og velg «Legg til på Hjem-skjerm».');
+    }
+  });
+  window.addEventListener('appinstalled',()=>{if(btn)btn.hidden=true});
+}
+
 function init(){
-  renderProfiles();loadProfileIntoUI();
+  setupPwa();renderProfiles();loadProfileIntoUI();
   $('profileSelect').addEventListener('change',()=>transition(()=>{state.activeProfileId=$('profileSelect').value;saveState();loadProfileIntoUI()}));
   $('addProfileBtn').addEventListener('click',()=>transition(createProfile));
   $('renameProfileBtn').addEventListener('click',()=>transition(renameProfile));
   $('deleteProfileBtn').addEventListener('click',()=>transition(deleteProfile));
   $('profileCaliber').addEventListener('change',()=>transition(()=>{const p=activeProfile();p.caliber=$('profileCaliber').value;p.selectedLoadIds=[...DEFAULT_LOADS[p.caliber]];p.primaryLoadId=p.selectedLoadIds[0];saveState();renderProfiles();$('profileSelect').value=p.id;$('ammoCaliberLabel').textContent=CAL_NAMES[p.caliber];renderLoadList();renderPrimaryPicker();update(false)}));
   $('typeFilter').addEventListener('change',()=>transition(()=>{state.ui.typeFilter=$('typeFilter').value;saveState();renderLoadList()}));
+  $('bulletFilter').addEventListener('change',()=>transition(()=>{state.ui.bulletFilter=$('bulletFilter').value;saveState();renderLoadList()}));
   $('primaryLoadSelect').addEventListener('change',()=>transition(()=>{activeProfile().primaryLoadId=$('primaryLoadSelect').value;saveState();update(false)}));
   for(const id of ['wind','windAngle','zero','sight','temp','pressure','v0Offset','maxRange']){$(id).addEventListener('change',()=>transition(()=>{markDirty();update(true)}))}
   $('readRange').addEventListener('input',()=>{markDirty();update(false)});$('readRange').addEventListener('change',()=>saveState());
