@@ -352,8 +352,8 @@ function phaseMood(){
   for(const e of enemyActors)if(e.kind==='ghost')e.model.visible=dusk&&e.hp>0;
   updateUI();
 }
-function enterScene(n,x,z,{preservePhase=false}={}){
-  s.scene=n;s.x=x;s.z=z;if(!preservePhase)s.phase=0;cameraYaw=-Math.PI/2;
+function enterScene(n,x,z,{preservePhase=false,preserveCamera=false}={}){
+  s.scene=n;s.x=x;s.z=z;if(!preservePhase)s.phase=0;if(!preserveCamera)cameraYaw=-Math.PI/2;
   clearScene();if(n===0)makeForest();else if(n===1)makeRuins();else makeSanctum();
   enemyActors=ENEMIES[n].filter(e=>!s.vanquished.includes(e.id)).map(makeCreature);
   phaseMood();hero.g.position.set(x,0,z);camera.position.set(x-10,6,z);camera.lookAt(x,1.4,z);
@@ -364,7 +364,7 @@ function startGame(option='new'){
   running=true;paused=false;dead=false;win=false;
   cameraYaw=s.camYaw;screenW=0;screenH=0;
   keysClear();swing=0;swordCool=0;bowCool=0;invuln=0;shotAt=0;
-  enterScene(s.scene,s.x,s.z,{preservePhase:option==='continue'});
+  enterScene(s.scene,s.x,s.z,{preservePhase:option==='continue',preserveCamera:option==='continue'});
   cameraYaw=s.camYaw;modalEl.style.display='none';$('pause').textContent='Ⅱ';
   unlockSound();
   say(s.song?'Du e tebake! Triforce-bitene vente på dæ.':'Snakk med det lysende alteret. Denne turen går vi på BEINA, kompis.',5);
