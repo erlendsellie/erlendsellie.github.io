@@ -71,7 +71,7 @@ const seedEnemies=[
 [{id:'r1',x:435,y:520,hp:3,type:'moss'},{id:'r2',x:1070,y:485,hp:3,type:'wisp'},{id:'r3',x:1300,y:520,hp:3,type:'moss'}],
 [{id:'s1',x:600,y:380,hp:3,type:'wisp'},{id:'s2',x:750,y:625,hp:3,type:'moss'},{id:'keeper',x:1070,y:480,hp:11,type:'boss'}]
 ];
-const fresh=()=>({scene:0,x:265,y:520,hp:6,maxHp:6,phase:0,song:false,sigils:[false,false,false],dead:[],won:false,seconds:0});
+const fresh=()=>({scene:0,x:265,y:520,hp:6,maxHp:6,fx:1,fy:0,invuln:0,swing:0,cool:0,bowcool:0,phase:0,song:false,sigils:[false,false,false],dead:[],won:false,seconds:0});
 let s=fresh();
 function restore(){try{const v=JSON.parse(localStorage.getItem(saveKey));if(v&&Number.isInteger(v.scene)&&v.scene>=0&&v.scene<3&&Array.isArray(v.sigils)&&v.sigils.length===3&&Number.isFinite(v.x)&&Number.isFinite(v.y)){return {...fresh(),...v,x:clamp(v.x,64,WW-64),y:clamp(v.y,64,WH-64),dead:Array.isArray(v.dead)?v.dead:[],sigils:v.sigils.map(Boolean)}}}catch{}return null}
 function persist(){if(!playing||s.won)return;try{localStorage.setItem(saveKey,JSON.stringify(s))}catch{}}
