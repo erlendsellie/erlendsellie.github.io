@@ -106,12 +106,12 @@ function interact(){
 if(!playing||paused)return;
 if(s.scene===0){
 if(dist(s.x,s.y,pos.altar.x,pos.altar.y)<104){if(!s.song){s.song=true;noise('song');burst(pos.altar.x,pos.altar.y,'#e5c7ff',40);show('You learned the ECHO SONG. Press F (or ◐ Time) to shift between dawn and dusk.',6);persist();updateHud()}else show('The altar hums. Press F to change the world around you.');return}
-if(dist(s.x,s.y,pos.groveChest.x,pos.groveChest.y)<96){chest(0);return}
+if(dist(s.x,s.y,pos.groveChest.x,pos.groveChest.y)<96){openChest(0);return}
 if(dist(s.x,s.y,pos.groveGate.x,pos.groveGate.y)<106){changeScene(1,170,500);return}
 }
 if(s.scene===1){
 if(dist(s.x,s.y,pos.ruinWell.x,pos.ruinWell.y)<90){s.hp=s.maxHp;updateHud();show('The moonwell restores your hearts.');noise('pickup');return}
-if(dist(s.x,s.y,pos.ruinChest.x,pos.ruinChest.y)<95){chest(1);return}
+if(dist(s.x,s.y,pos.ruinChest.x,pos.ruinChest.y)<95){openChest(1);return}
 if(dist(s.x,s.y,pos.ruinGate.x,pos.ruinGate.y)<110){if(!s.sigils[0]||!s.sigils[1])show('The Starwell gate demands the first two sigils.');else changeScene(2,190,490);return}
 if(s.x<155&&s.y>400&&s.y<610){changeScene(0,1380,500);return}
 }
@@ -121,7 +121,7 @@ if(s.x<155&&s.y>400&&s.y<610){changeScene(1,1380,500);return}
 }
 show('There is nothing to use here. Follow the glowing markers.',1.8)
 }
-function chest(which){if(s.sigils[which]){show('This ancient chest is already empty.');return}
+function openChest(which){if(s.sigils[which]){show('This ancient chest is already empty.');return}
 if(!s.song){show('A strange melody is carved into the lock.');return}
 if(!s.phase){show('The chest is only real at DUSK. Press F to play the Echo Song.');return}
 s.sigils[which]=true;noise('pickup');burst(which?pos.ruinChest.x:pos.groveChest.x,which?pos.ruinChest.y:pos.groveChest.y,'#ffd58c',40);updateHud();persist();show(which?'SECOND SIGIL FOUND! The Starwell gate lies east.':'FIRST SIGIL FOUND! Enter the stone arch to the east.',5)
