@@ -93,7 +93,7 @@ function particle(x,y,z,color,count=15){
 function clearScene(){
   for(const p of sparks){scene.remove(p.mesh);p.mesh.geometry.dispose();p.mesh.material.dispose()}sparks=[];
   for(const p of arrows){scene.remove(p.mesh);p.mesh.geometry.dispose()}arrows=[];
-  scene.remove(world);world.traverse(o=>{if(o.isMesh&&o.geometry&&!Object.values(M).includes(o.material)){o.geometry.dispose();if(o.material&&o.material.dispose)o.material.dispose()}});world=new THREE.Group();scene.add(world);
+  scene.remove(world);world.traverse(o=>{if(o.isMesh&&o.geometry){o.geometry.dispose();if(o.material&&o.material.dispose&&!Object.values(M).includes(o.material))o.material.dispose()}});world=new THREE.Group();scene.add(world);
   enemyActors=[];interactables=[];props=[];bridge=null;
 }
 function ground(hex){
@@ -352,8 +352,8 @@ function phaseMood(){
   for(const e of enemyActors)if(e.kind==='ghost')e.model.visible=dusk&&e.hp>0;
   updateUI();
 }
-function enterScene(n,x,z){
-  s.scene=n;s.x=x;s.z=z;s.phase=0;cameraYaw=-Math.PI/2;
+function enterScene(n,x,z,{preservePhase=false}={}){
+  s.scene=n;s.x=x;s.z=z;if(!preservePhase)s.phase=0;cameraYaw=-Math.PI/2;
   clearScene();if(n===0)makeForest();else if(n===1)makeRuins();else makeSanctum();
   enemyActors=ENEMIES[n].filter(e=>!s.vanquished.includes(e.id)).map(makeCreature);
   phaseMood();hero.g.position.set(x,0,z);camera.position.set(x-10,6,z);camera.lookAt(x,1.4,z);
@@ -364,7 +364,7 @@ function startGame(option='new'){
   running=true;paused=false;dead=false;win=false;
   cameraYaw=s.camYaw;screenW=0;screenH=0;
   keysClear();swing=0;swordCool=0;bowCool=0;invuln=0;shotAt=0;
-  enterScene(s.scene,s.x,s.z);
+  enterScene(s.scene,s.x,s.z,{preservePhase:option==='continue'});
   cameraYaw=s.camYaw;modalEl.style.display='none';$('pause').textContent='Ⅱ';
   unlockSound();
   say(s.song?'Du e tebake! Triforce-bitene vente på dæ.':'Snakk med det lysende alteret. Denne turen går vi på BEINA, kompis.',5);
@@ -648,7 +648,7 @@ startBtn.addEventListener('click',()=>{
   else startGame('new');
 });
 continueBtn.addEventListener('click',()=>startGame('continue'));
-$('pause').addEventListener('click',pauseGame);
+$('pause').addEventListener('click',()=>{if(paused){running=true;paused=false;modalEl.style.display='none';$('pause').textContent='Ⅱ';unlockSound()}else pauseGame()});
 $('sound').addEventListener('click',()=>{muted=!muted;$('sound').textContent=muted?'♫ Av':'♫ På';if(!muted)unlockSound()});
 $('continue').hidden=!load();
 $('start').disabled=false;$('start').textContent='Start eventyret';$('start').dataset.mode='new';
